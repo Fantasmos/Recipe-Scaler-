@@ -27,6 +27,10 @@ class Interface():
         raise NotImplementedError('Abstract method has not been overriden!') 
     def GetRecipeFromUser(self , HumanMeasurements):
         raise NotImplementedError('Abstract method has not been overriden!') 
+    def Print(self, string):
+        raise NotImplementedError('Abstract method has not been overriden!') 
+    def ScaleRecipe(self, recipe):
+        raise NotImplementedError('Abstract method has not been overriden!') 
 
 class ConsoleInterface(Interface):
     def GetDictionaryToUse(self, DictionariesToChooseFrom):
@@ -40,7 +44,9 @@ class ConsoleInterface(Interface):
                 print ("%s. %s"  % (iterator, entry.__name__))
                 iterator = iterator + 1
             try:
-                EntryWanted = int(input("Please type the number you would like")) 
+                print("Please type the number you would like") 
+                EntryWanted = int(input("")) 
+                print("")
                 HumanMeasurements = AllDicts[EntryWanted - 1]()
             except:
                 print("An error occured, please try again")
@@ -56,7 +62,10 @@ class ConsoleInterface(Interface):
     
     '''Unit is in [0] and volume is in [1]'''
     def GetUnitAndVolume(self): 
-        Response = input("Type up your volume")
+        print("Type up your volume")
+        Response = input("")
+        print("")
+
         Pair = self.SplitStringByVolume(Response)
 
         return UnitAndVolume(Pair.string, Pair.volume)
@@ -65,7 +74,10 @@ class ConsoleInterface(Interface):
         EachIngredientUnParsed = []
         GivingIngredients = True
         while GivingIngredients: 
-            Response = input("Please put in ingredients")
+            print("Please put in the ingredients (Such as '1 Tbsp Sugar'). Type 'Done' when you are finished")
+            Response = input("")
+            print("")
+
             if Response == "Done":
                 GivingIngredients = False
                 break
@@ -75,15 +87,17 @@ class ConsoleInterface(Interface):
         
         return EachIngredientUnParsed
 
-    def GetIngredientFromRecipe(self, recipe):
+    def GetIngredientFromRecipe(self, recipe, HumanMeasurements ):
         print ("Which ingredient do you want to change")
 
         iterator = 0
         for item in recipe.GetIngredients():
-            print("%s. %s" % (iterator , item.Name))
+            print("%s. %s %s" % (iterator , item.Name, MLConverter.TurnMLtoHumanMeasurements(item.ML , HumanMeasurements)))
             iterator = iterator + 1
 
-        SelectedNumber = int(input ("Type which one you would like to modify"))
+        print ("Type which one you would like to modify")
+        SelectedNumber = int(input("") )
+        print("")
 
         NameOfSelected = (recipe.GetIngredients()[SelectedNumber].Name)
         VolumeOfSelected = int(recipe.GetIngredients()[SelectedNumber].ML)
@@ -110,3 +124,32 @@ class ConsoleInterface(Interface):
             UserRecipe.AddToRecipe(Ingredient)
         
         return UserRecipe
+
+    def Print(self, string):
+        print(string)
+
+    def ScaleRecipe(self, recipe, HumanMeasurements):
+        print("Would you like to scale by?")
+        print("1. Recipe?")
+        print("2. Ingredient?")
+        print("3. Country")
+        response = input("")
+        print("")
+
+        if (response == "1"):
+            print("Please insert your scale")
+            scaler = input("")
+            print("")
+        if (response == "2"):
+            SelectedIngredient = self.GetIngredientFromRecipe(recipe , HumanMeasurements)
+            UnitAndVolume = self.GetUnitAndVolume()
+            Scaler = MLConverter.GetML(UnitAndVolume.unit , UnitAndVolume.volume, HumanMeasurements ) / SelectedIngredient.ML 
+        if (response == "3"):
+            HumanMeasurements = self.GetDictionaryToUse(Dictionary.GetAllDictionaries())
+            Scaler = 1
+
+        for item in recipe.GetIngredients():
+            NewRatio = item.ML * Scaler
+            PrintableML =  MLConverter.TurnMLtoHumanMeasurements(NewRatio,HumanMeasurements)
+            print("%s : %s" % (item.Name , PrintableML))
+

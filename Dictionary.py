@@ -9,7 +9,7 @@ class AmericanUnits ():
         self.AddEntry('CUP', 240)
         self.AddEntry('TEASPOON', 5)
         self.AddEntry('TABLESPOON', 16)
-        self.AddEntry('GALLON', 3.8)
+        self.AddEntry('GALLON', 3785)
         self.AddEntry('QUART',  950)
         self.AddEntry('PINT', 475)
         self.AddEntry('OUNCE', 30)   

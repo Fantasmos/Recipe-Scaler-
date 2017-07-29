@@ -18,17 +18,11 @@ UserRecipe = Interface.GetRecipeFromUser(HumanMeasurements)
 
 '''Scale entire recipe by changing one ingredient''' 
 
-SelectedIngredient = Interface.GetIngredientFromRecipe(UserRecipe)
+Running = True
 
-UnitAndVolume = Interface.GetUnitAndVolume()
-
-Scaler = MLConverter.GetML(UnitAndVolume.unit , UnitAndVolume.volume, HumanMeasurements ) / SelectedIngredient.ML 
-
-for item in UserRecipe.GetIngredients():
-    NewRatio = item.ML * Scaler
-    PrintableML =  MLConverter.TurnMLtoHumanMeasurements(NewRatio,HumanMeasurements)
+while (Running): 
+    try:
+        Interface.ScaleRecipe(UserRecipe, HumanMeasurements)
+    except: 
+        Interface.Print("An error occured, please try again")
     
-    print("%s : %s" % (item.Name , PrintableML))
-
-
-
