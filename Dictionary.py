@@ -45,8 +45,8 @@ class AmericanUnits ():
         ReturnValue = None 
 
         for key, value in self.Dictionary.items():
-            if (ReturnValue is None) or (value < ReturnValue) : 
-                ReturnValue = value 
+            if (ReturnValue is None) or (value < ReturnValue[1]) : 
+                ReturnValue = (key, value) 
         return ReturnValue
 
 

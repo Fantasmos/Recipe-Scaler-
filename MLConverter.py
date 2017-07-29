@@ -3,7 +3,8 @@ import Ingredient
 import CookingUtilities
 
 def TurnMLtoHumanMeasurements(ML , HumanMeasurements):
-    Threshold = HumanMeasurements.GetSmallestValue()
+    Pair = HumanMeasurements.GetSmallestValue()
+    Threshold = Pair[1]
     
     Measurements = {}
 
@@ -34,8 +35,8 @@ def TurnMLtoHumanMeasurements(ML , HumanMeasurements):
         ML = OptimalMLRemaining
         
         Measurements[OptimalMeasurement] = OptimalResult
-
-    Measurements["Remaining ML"] = ML  
+    PostString = Pair[0] + " Remaining"
+    Measurements[PostString] = ML / Pair[1]  
     return Measurements 
 
 
