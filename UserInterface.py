@@ -113,7 +113,7 @@ class ConsoleInterface(Interface):
         
         TotalMeasurement = MLConverter.GetML(MeasurementUnit[0],  volume , HumanMeasurements)
         
-        return CookingUtilities.Ingredient(MeasurementUnit[1],TotalMeasurement)
+        return CookingUtilities.Ingredient(MeasurementUnit[-1],TotalMeasurement)
 
     def GetRecipeFromUser(self , HumanMeasurements):
         EachIngredientUnParsed = self.GetAllIngredientNameAndVolumeFromUser()

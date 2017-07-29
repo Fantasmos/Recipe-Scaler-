@@ -13,12 +13,17 @@ class AmericanUnits ():
         self.AddEntry('QUART',  950)
         self.AddEntry('PINT', 475)
         self.AddEntry('OUNCE', 30)   
+        
 
         self.Abbreviations = {}
         self.AddAbbreviation('TBSP', 'TABLESPOON')
         self.AddAbbreviation('TSP', 'TEASPOON')
         self.AddAbbreviation('OZ', 'Ounce')     
     
+        for Key in self.Dictionary:
+            Entry = (Key + "s")
+            self.AddAbbreviation(Entry, Key)
+
     def AddEntry(self, key,value):
         self.Dictionary[key.upper()] = value
 
